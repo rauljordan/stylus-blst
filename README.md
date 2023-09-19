@@ -1,5 +1,7 @@
 # BLST on Arbitrum Stylus
 
+This repo defines a smart contract for [Arbitrum Stylus](https://arbitrum.io/stylus) which can verify Ethereum [BLS signatures](https://eth2book.info/capella/part2/building_blocks/signatures/) onchain. It uses the heavily optimized and robust [BLST](https://github.com/supranational/blst) project, written in C, compiles it to WebAssembly, and deploys it to the Stylus testnet for use.
+
 ## Building
 
 ### Requirements
@@ -65,7 +67,13 @@ cargo stylus deploy --wasm-file-path <wasm> --private-key <secret>
 
 [cargo]: https://github.com/OffchainLabs/cargo-stylus
 
-## Performance & Gas Cost
+## Performance & Gas Costs
+
+The gas cost for a single BLST signature verification on Stylus is approximately 17 million gas units. At a basefee of 0.1 gwei, which is what Arbitrum One uses, it amounts to a few dollars of value based on the current price of ETH.
+
+See here for an [example tx](https://stylus-testnet-explorer.arbitrum.io/tx/0xa744164f5226a2e81385f68a742594911427e5c09ac3968f8d8545616d582901)
+
+If this were priced as a precompile, we estimate it would be ~430k gas units, as the native compilation of BLST uses heavily optimized assembly and SIMD instructions compared to its WASM counterpart. Nonetheless, deploying a program as complex as this to Stylus is far more time efficient than expecting new precompiles to be added to Ethereum chains.
 
 ## License
 
