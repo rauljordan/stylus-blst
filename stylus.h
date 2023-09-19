@@ -1,17 +1,16 @@
 // Copyright 2022-2023, Offchain Labs, Inc.
 // For licensing, see https://github.com/stylus-sdk-c/blob/stylus/licenses/COPYRIGHT.md
-
 #ifndef STYLUS_STYLUS_H
 #define STYLUS_STYLUS_H
 
 #include <stddef.h>
 #include <stdint.h>
 
-#include "hostio.h"
+#define VM_HOOK(name) extern __attribute__((import_module("vm_hooks"), import_name(#name)))
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+VM_HOOK(read_args) void read_args(const uint8_t * data);
+VM_HOOK(write_result) void write_result(const uint8_t * data, size_t len);
+VM_HOOK(memory_grow) void memory_grow(const uint16_t pages);
 
 typedef enum ArbStatus {
     Success = 0,
@@ -40,9 +39,4 @@ typedef struct ArbResult {
         write_result(result.output, result.output_len);                 \
         return result.status;                                           \
     }
-
-#ifdef __cplusplus
-}
-#endif
-
 #endif

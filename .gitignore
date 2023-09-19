@@ -1,0 +1,4 @@
+native/libblst.a
+libblst.a
+bls.wasm
+main
